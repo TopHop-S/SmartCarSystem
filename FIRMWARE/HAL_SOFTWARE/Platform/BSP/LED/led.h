@@ -4,7 +4,7 @@
   * @author  TopHop
   * @date    2025/10/09
   * @version V1.0
-  * @brief   Header file for sys.c module LED 驱动代码
+  * @brief   Header file for led.c module LED 驱动代码
   ******************************************************************************
   * @attention
   *

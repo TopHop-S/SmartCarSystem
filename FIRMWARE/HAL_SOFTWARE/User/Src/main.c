@@ -22,6 +22,8 @@
 #include "./SYSTEM/usart/usart.h"
 #include "./SYSTEM/delay/delay.h"
 #include "./BSP/LED/led.h"
+#include "./BSP/KEY/key.h"
+#include "./BSP/EXTI/exti.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -41,12 +43,30 @@ int main(void)
     sys_stm32_clock_init(336,8,2,7);    /* 配置系统时钟, 168Mhz */
     delay_init(168);    /* 初始化延时函数 */
     led_init();         /* 初始化LED */
+    key_init();         /* 初始化KEY */
+#if EXTI0_PHY_TEST
+    extix_init();       /* 初始化EXTI */
+#endif
 
+    LED0_OFF();
+    
     while (1){
 
     #if LED_FLASHING_TEST
         LED0_TOGGLE();
         delay_ms(500);
+    #endif
+
+    #if KEY_PHY_TEST
+        if(KEY0_PRES == key_scan()){
+            LED0_ON();
+        }else{
+            LED0_OFF();
+        }
+    #endif
+
+    #if EXTI0_PHY_TEST
+        delay_ms(1000);
     #endif
 
     }
