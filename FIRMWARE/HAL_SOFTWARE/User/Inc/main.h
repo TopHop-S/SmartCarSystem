@@ -18,7 +18,8 @@
 
 #define LED_FLASHING_TEST           0           /* LED闪烁测试 */
 #define KEY_PHY_TEST                0           /* KEY物理按键测试 */
-#define EXTI0_PHY_TEST              1           /* EXTI0外部中断物理按键测试 */
+#define EXTI0_PHY_TEST              0           /* EXTI0外部中断物理按键测试 */
+#define UART_TEST                   1           /* 串口通信测试 */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

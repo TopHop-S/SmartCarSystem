@@ -39,13 +39,20 @@
   */
 int main(void)
 {
-    HAL_Init();         /* åˆå§‹åŒ–HALåº“ */
-    sys_stm32_clock_init(336,8,2,7);    /* é…ç½®ç³»ç»Ÿæ—¶é’Ÿ, 168Mhz */
-    delay_init(168);    /* åˆå§‹åŒ–å»¶æ—¶å‡½æ•° */
-    led_init();         /* åˆå§‹åŒ–LED */
-    key_init();         /* åˆå§‹åŒ–KEY */
+    HAL_Init();         /* ³õÊ¼»¯HAL¿â */
+    sys_stm32_clock_init(336,8,2,7);    /* ÅäÖÃÏµÍ³Ê±ÖÓ, 168Mhz */
+    delay_init(168);    /* ³õÊ¼»¯ÑÓÊ±º¯Êı */
+    led_init();         /* ³õÊ¼»¯LED */
+    key_init();         /* ³õÊ¼»¯KEY */
+
 #if EXTI0_PHY_TEST
-    extix_init();       /* åˆå§‹åŒ–EXTI */
+    extix_init();       /* ³õÊ¼»¯EXTI */
+#endif
+
+#if UART_TEST
+    usart_init(115200); /* ³õÊ¼»¯´®¿Ú */
+    uint32_t times = 0;
+    uint16_t len = 0;
 #endif
 
     LED0_OFF();
@@ -69,7 +76,35 @@ int main(void)
         delay_ms(1000);
     #endif
 
+    #if UART_TEST
+        if(g_usart_rx_sta & 0x8000){        // ½ÓÊÕÍê³É
+            len = g_usart_rx_sta & 0x3FFF;  // ½ÓÊÕµÄ×Ö½ÚÊı
+            printf("\r\n ·¢ËÍµÄÏûÏ¢Îª:\r\n");
+
+            HAL_UART_Transmit(&uartx_handle, (uint8_t *)g_usart_rx_buf, len, 1000); // ·¢ËÍÊı¾İ
+            
+            printf("\r\n\r\n");             // ²åÈë»»ĞĞ
+            g_usart_rx_sta = 0;             // ÇåÁã×¼±¸ÏÂ´Î½ÓÊÕ
+        }else{
+            times++;
+
+            if(times % 5000 == 0){
+                printf("\r\n ´®¿Ú1ÊµÑé \r\n");
+            }
+
+            if(times % 200 == 0){
+                printf("ÇëÊäÈëÊı¾İ,ÒÔ»Ø³µ¼ü½áÊø \r\n");
+            }
+
+            if(times % 50 == 0){
+                LED0_TOGGLE();      /* ÉÁË¸ LED,ÌáÊ¾ÏµÍ³ÕıÔÚÔËĞĞ. */ 
+            }
+            
+            delay_ms(10);
+        }
+    #endif
+
     }
 
-    // LED0_OFF();         /* ç¨‹åºç»“æŸ å…³é—­LED0 */
+    // LED0_OFF();         /* ³ÌĞò½áÊø ¹Ø±ÕLED0 */
 }
