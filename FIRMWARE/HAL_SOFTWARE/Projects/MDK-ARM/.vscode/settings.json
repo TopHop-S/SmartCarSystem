@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "sys.h": "c",
+        "usart.h": "c",
+        "stm32f4xx_hal.h": "c",
+        "stdio.h": "c",
+        "main.h": "c",
+        "delay.h": "c",
+        "th_tim.h": "c"
+    }
+}
